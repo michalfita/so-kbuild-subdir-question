@@ -1,0 +1,9 @@
+# obj-m := ""
+# dtbo-y += raspberrypi-5b-csi2-mydriver.dtbo
+
+# targets += $(dtbo-y)
+# always  := $(dtbo-y)
+
+dtb-y := raspberrypi-5b-csi2-mydriver.dtbo
+targets += $(dtb-y)
+always  := $(dtb-y)

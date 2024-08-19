@@ -1,0 +1,24 @@
+DTC := dtc
+CPP := cpp
+
+objects = raspberrypi-5b-csi2-mydriver.dtbo
+
+DTC_FLAGS += -Wno-unit_address_vs_reg \
+        -Wno-unit_address_format \
+        -Wno-avoid_unnecessary_addr_size \
+        -Wno-alias_paths \
+        -Wno-graph_child_address \
+        -Wno-simple_bus_reg \
+        -Wno-unique_unit_address \
+        -Wno-pci_device_reg \
+	-Wno-node_name_chars_strict \
+        -Wno-property_name_chars_strict
+
+.PHONY: default
+default: $(objects)
+
+# k3-am625-beagleplay-csi2-imx219.dto: beagleplay-imx219.dts
+$(objects): %.dtbo: %.dts
+	@echo "Target: $@ Source: $<"
+	$(CPP) -nostdinc -I . -undef -x assembler-with-cpp $< $(<:.dts=.dts.prepd)
+	$(DTC) $(DTC_FLAGS) -@ -I dts $(<:.dts=.dts.prepd) -O dtb -o $@
